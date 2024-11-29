@@ -1,3 +1,11 @@
 class Station < ApplicationRecord
-  validates :name, presence: true, uniqueness: true
+  has_many :start_itineraries, class_name: 'Itinerary', foreign_key: 'start_station_id'
+  has_many :end_itineraries, class_name: 'Itinerary', foreign_key: 'end_station_id'
+
+  validates :external_id, presence: true
+
+  scope :metro, -> { where(station_type: "metro") }
+  scope :bus, -> { where(station_type: "bus") }
+  scope :tram, -> { where(station_type: "tram") }
+  scope :rail, -> { where(station_type: "rail") }
 end

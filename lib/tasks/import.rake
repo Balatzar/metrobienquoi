@@ -3,37 +3,95 @@ require 'csv'
 namespace :import do
   desc 'Import stations from CSV file'
   task stations: :environment do
-    csv_path = Rails.root.join('db/data/trafic-annuel-entrant-par-station-du-reseau-ferre-2021.csv')
+    csv_path = Rails.root.join('db/data/arrets.csv')
     
     puts "Importing stations from #{csv_path}..."
     
     # Delete all existing records to start fresh
+    # Delete itineraries first due to foreign key constraints
+    Itinerary.delete_all
     Station.delete_all
     
     # Prepare data for bulk insert
     stations_data = []
     
     CSV.foreach(csv_path, headers: true, col_sep: ';', encoding: 'bom|utf-8') do |row|
+      # Parse coordinates from ArRGeopoint
+      latitude, longitude = row['ArRGeopoint']&.split(',')&.map(&:strip)&.map(&:to_f)
+
       stations_data << {
-        rang: row['Rang'],
-        reseau: row['Réseau'],
-        name: row['Station'],
-        trafic: row['Trafic'],
-        correspondance_1: row['Correspondance_1'],
-        correspondance_2: row['Correspondance_2'],
-        correspondance_3: row['Correspondance_3'],
-        correspondance_4: row['Correspondance_4'],
-        correspondance_5: row['Correspondance_5'],
-        ville: row['Ville'],
-        arrondissement_pour_paris: row['Arrondissement pour Paris'],
+        external_id: row['ArRId'],
+        version: row['ArRVersion'],
+        name: row['ArRName'],
+        station_type: row['ArRType'],
+        x_coord: row['ArRXEpsg2154'],
+        y_coord: row['ArRYEpsg2154'],
+        city: row['ArRTown'],
+        postal_code: row['ArRPostalRegion'],
+        accessibility: row['ArRAccessibility']&.downcase == 'true',
+        audible_signals: row['ArRAudibleSignals'],
+        visual_signs: row['ArRVisualSigns'],
+        fare_zone: row['ArRFareZone'],
+        zda_id: row['ZdAId'],
+        latitude: latitude,
+        longitude: longitude,
         created_at: Time.current,
         updated_at: Time.current
       }
+
+      # Bulk insert every 1000 records to avoid memory issues
+      if stations_data.size >= 1000
+        Station.insert_all!(stations_data)
+        stations_data = []
+      end
     end
     
-    # Perform bulk insert
-    Station.insert_all!(stations_data)
+    # Insert all records
+    Station.insert_all!(stations_data) if stations_data.any?
     
     puts "Successfully imported #{Station.count} stations!"
+  end
+
+  desc 'Generate all possible itineraries between stations'
+  task generate_itineraries: :environment do
+    puts "Generating itineraries..."
+    
+    # Delete existing itineraries to start fresh
+    Itinerary.delete_all
+    
+    stations = Station.metro
+    total_combinations = stations.count * (stations.count - 1)
+    current = 0
+    
+    # Prepare data for bulk insert
+    itineraries_data = []
+    
+    stations.find_each do |start_station|
+      stations.find_each do |end_station|
+        next if start_station == end_station
+        
+        current += 1
+        progress = (current.to_f / total_combinations * 100).round(2)
+        print "\rProgress: #{progress}% (#{current}/#{total_combinations})"
+        
+        itineraries_data << {
+          start_station_id: start_station.id,
+          end_station_id: end_station.id,
+          created_at: Time.current,
+          updated_at: Time.current
+        }
+        
+        # Bulk insert every 1000 records to avoid memory issues
+        if itineraries_data.size >= 1000
+          Itinerary.insert_all!(itineraries_data)
+          itineraries_data = []
+        end
+      end
+    end
+    
+    # Insert any remaining records
+    Itinerary.insert_all!(itineraries_data) if itineraries_data.any?
+    
+    puts "\nSuccessfully generated #{Itinerary.count} itineraries!"
   end
 end
