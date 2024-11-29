@@ -9,4 +9,7 @@ class Station < ApplicationRecord
   scope :bus, -> { where(station_type: "bus") }
   scope :tram, -> { where(station_type: "tram") }
   scope :rail, -> { where(station_type: "rail") }
+  scope :with_itineraries, -> { 
+    where("EXISTS (SELECT 1 FROM itineraries WHERE itineraries.start_station_id = stations.id OR itineraries.end_station_id = stations.id)")
+  }
 end
