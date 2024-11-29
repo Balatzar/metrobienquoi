@@ -1,0 +1,27 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  rang: 1
+  reseau: MyString
+  name: MyString
+  trafic: 1
+  correspondance_1: MyString
+  correspondance_2: MyString
+  correspondance_3: MyString
+  correspondance_4: MyString
+  correspondance_5: MyString
+  ville: MyString
+  arrondissement_pour_paris: MyString
+
+two:
+  rang: 1
+  reseau: MyString
+  name: MyString
+  trafic: 1
+  correspondance_1: MyString
+  correspondance_2: MyString
+  correspondance_3: MyString
+  correspondance_4: MyString
+  correspondance_5: MyString
+  ville: MyString
+  arrondissement_pour_paris: MyString
