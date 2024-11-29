@@ -59,16 +59,17 @@ namespace :import do
     # Delete existing itineraries to start fresh
     Itinerary.delete_all
     
-    stations = Station.metro
+    # Get unique stations by taking the first station of each zda_id group
+    stations = Station.metro.group_by(&:zda_id).transform_values(&:first).values
     total_combinations = stations.count * (stations.count - 1)
     current = 0
     
     # Prepare data for bulk insert
     itineraries_data = []
     
-    stations.find_each do |start_station|
-      stations.find_each do |end_station|
-        next if start_station == end_station
+    stations.each do |start_station|
+      stations.each do |end_station|
+        next if start_station.id == end_station.id
         
         current += 1
         progress = (current.to_f / total_combinations * 100).round(2)
