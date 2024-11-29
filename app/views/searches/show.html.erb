@@ -1,0 +1,25 @@
+<div class="container mx-auto px-4 py-8">
+  <div class="mb-6">
+    <%= link_to '← Back to Searches', searches_path, class: "text-blue-500 hover:text-blue-700" %>
+  </div>
+
+  <div class="bg-white shadow-md rounded-lg p-6">
+    <h1 class="text-2xl font-bold mb-4">Search #<%= @search.id %></h1>
+    
+    <div class="mt-6">
+      <h2 class="text-xl font-semibold mb-4">Stations (<%= @search.stations.count %>)</h2>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <% @search.stations.each do |station| %>
+          <div class="border rounded-lg p-4">
+            <h3 class="font-semibold"><%= station.name %></h3>
+            <p class="text-gray-600"><%= station.station_type %></p>
+            <% if station.city.present? %>
+              <p class="text-gray-500"><%= station.city %></p>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

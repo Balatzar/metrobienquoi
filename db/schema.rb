@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2024_11_30_000000) do
+ActiveRecord::Schema[8.0].define(version: 2024_11_30_001000) do
   create_table "itineraries", force: :cascade do |t|
     t.integer "start_station_id", null: false
     t.integer "end_station_id", null: false
@@ -20,6 +20,21 @@ ActiveRecord::Schema[8.0].define(version: 2024_11_30_000000) do
     t.datetime "updated_at", null: false
     t.index ["end_station_id"], name: "index_itineraries_on_end_station_id"
     t.index ["start_station_id"], name: "index_itineraries_on_start_station_id"
+  end
+
+  create_table "searches", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "searches_stations", force: :cascade do |t|
+    t.integer "search_id", null: false
+    t.integer "station_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["search_id", "station_id"], name: "index_searches_stations_on_search_id_and_station_id", unique: true
+    t.index ["search_id"], name: "index_searches_stations_on_search_id"
+    t.index ["station_id"], name: "index_searches_stations_on_station_id"
   end
 
   create_table "stations", force: :cascade do |t|
@@ -45,4 +60,6 @@ ActiveRecord::Schema[8.0].define(version: 2024_11_30_000000) do
 
   add_foreign_key "itineraries", "stations", column: "end_station_id"
   add_foreign_key "itineraries", "stations", column: "start_station_id"
+  add_foreign_key "searches_stations", "searches"
+  add_foreign_key "searches_stations", "stations"
 end
