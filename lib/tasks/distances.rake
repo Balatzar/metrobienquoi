@@ -3,7 +3,7 @@ namespace :distances do
   task update: :environment do
     puts "Updating itineraries with distance and duration..."
     
-    itineraries = Itinerary.where(distance: nil, duration: nil).limit(5)
+    itineraries = Itinerary.where(distance: nil, duration: nil).limit(500)
     total = itineraries.count
     current = 0
     
