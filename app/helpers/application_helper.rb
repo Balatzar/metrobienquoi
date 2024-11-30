@@ -9,4 +9,29 @@ module ApplicationHelper
       "#{remaining_seconds} sec"
     end
   end
+
+  def random_transport_emoji(station_name)
+    emojis = %w[
+      🚇 🚊 🚉 🚍 🚌 🚋 🚆 🚅 🚄 🚈 
+      🦊 🐱 🐶 🦁 🐯 🐼 🐨 🐮 
+      🍕 🍔 🍟 🌭 🍿 🧇 🥐 🥨 
+      ⭐️ 🌟 ✨ 💫 🌈 🎈 🎨 🎭 
+      🎮 🎲 🎯 🎪 🎠 🎡 🎢 
+      🌸 🌺 🌻 🌹 🌷 🍀 🌴 
+      🦄 🐉 🐲 🦕 🦖 🐳 🐋 
+      🎪 🗽 🗼 🎡 🎢 🎠 
+      🌞 🌙 ⭐️ 🌎 🌍 🌏 
+      🎭 🎪 🎨 🎬 🎤 🎧 
+      🦸‍♂️ 🦸‍♀️ 🧙‍♂️ 🧙‍♀️ 🧚‍♂️ 🧚‍♀️
+    ]
+    
+    # Create a deterministic index based on the station name
+    # Sum the ASCII values of the characters in the name
+    sum = station_name.bytes.sum
+    
+    # Use modulo to get an index within the array bounds
+    index = sum % emojis.length
+    
+    emojis[index]
+  end
 end
