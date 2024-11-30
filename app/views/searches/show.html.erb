@@ -12,9 +12,8 @@
     <h1 class="text-2xl font-bold mb-4">Search #<%= @search.id %></h1>
     
     <div class="mt-6">
-      <h2 class="text-xl font-semibold mb-4">Stations (<%= @search.stations.count %>)</h2>
-      
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <h2 class="text-xl font-semibold mb-4">Selected Stations (<%= @search.stations.count %>)</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
         <% @search.stations.each do |station| %>
           <div class="border rounded-lg p-4">
             <h3 class="font-semibold"><%= station.name %></h3>
@@ -25,6 +24,36 @@
           </div>
         <% end %>
       </div>
+
+      <% if @search.stations.size >= 2 %>
+        <h2 class="text-xl font-semibold mb-4">Nearby Stations</h2>
+        <div class="space-y-6">
+          <% @search.nearby_stations.each do |result| %>
+            <div class="border rounded-lg p-4">
+              <div class="mb-4">
+                <h3 class="text-lg font-semibold"><%= result[:station].name %></h3>
+                <p class="text-gray-600"><%= result[:station].station_type %></p>
+                <% if result[:station].city.present? %>
+                  <p class="text-gray-500"><%= result[:station].city %></p>
+                <% end %>
+                <p class="text-gray-600 mt-2">Average duration: <%= format_duration(result[:average_duration]) %></p>
+              </div>
+
+              <div class="mt-4">
+                <h4 class="font-medium text-gray-700 mb-2">Connected through:</h4>
+                <div class="space-y-2">
+                  <% result[:itineraries].each do |itinerary| %>
+                    <div class="text-sm text-gray-600">
+                      <%= itinerary.start_station.name %> → <%= itinerary.end_station.name %>
+                      <span class="text-gray-500">(<%= format_duration(itinerary.duration) %>)</span>
+                    </div>
+                  <% end %>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
     </div>
   </div>
 </div>
