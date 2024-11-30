@@ -1,9 +1,10 @@
 namespace :distances do
-  desc 'Update itineraries with duration from IDF Mobilité API (limited to 500)'
+  desc 'Update itineraries with duration from IDF Mobilité API (limited to 5_000)'
   task update: :environment do
     puts "Updating itineraries with duration..."
+    start_time = Time.now
     
-    itineraries = Itinerary.where(duration: nil).limit(500)
+    itineraries = Itinerary.where(duration: nil).limit(5_000)
     total = itineraries.count
     current = 0
     
@@ -37,6 +38,8 @@ namespace :distances do
       sleep 0.1
     end
     
-    puts "\nSuccessfully processed #{total} itineraries!"
+    end_time = Time.now
+    duration = (end_time - start_time).round(2)
+    puts "\nSuccessfully processed #{total} itineraries in #{duration} seconds!"
   end
 end
