@@ -11,6 +11,7 @@ class IdfMobiliteClient
       from: "#{origin_lng};#{origin_lat}", # Note: IDF Mobilité uses lng;lat format
       to: "#{destination_lng};#{destination_lat}",
       datetime_represents: 'departure',
+      datetime: "20241212140000", # December 12th, 2024 at 14:00
       first_section_mode: ['walking'],
       last_section_mode: ['walking'],
       disable_geojson: true
