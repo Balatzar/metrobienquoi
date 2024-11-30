@@ -83,8 +83,8 @@
     </h2>
     <div class="grid md:grid-cols-3 gap-6">
         <% @search.stations.each do |station| %>
-          <div class="bg-white rounded-xl overflow-hidden shadow-xl hover:shadow-2xl transition-shadow">
-              <div class="bg-gradient-to-br from-pink-400 to-indigo-400 p-4 text-white">
+          <div class="bg-gradient-to-br from-pink-400 to-indigo-400 rounded-xl overflow-hidden shadow-xl hover:shadow-2xl transition-shadow h-full">
+              <div class="p-4 text-white h-full">
                   <div class="flex items-center gap-2 mb-2">
                       <span class="text-3xl" role="img" aria-label="Station icon"><%= random_transport_emoji(station.name) %></span>
                       <div class="font-bold text-lg group-hover:text-yellow-300 transition-colors">
@@ -109,8 +109,8 @@
     </h2>
     <div class="grid md:grid-cols-2 gap-6">
         <% @search.nearby_stations[1..4].each do |station_data| %>
-            <div class="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all hover:scale-102">
-                <div class="bg-gradient-to-r from-indigo-400 to-purple-400 p-4">
+            <div class="bg-gradient-to-r from-indigo-400 to-purple-400 rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all hover:scale-102 h-full">
+                <div class="p-4 h-full">
                     <div class="text-white">
                         <div class="flex items-center justify-between mb-2">
                             <div class="flex items-center gap-2">
