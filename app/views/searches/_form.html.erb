@@ -1,19 +1,24 @@
 <%= form_with(model: search, local: true, class: "space-y-6") do |f| %>
-  <div>
-    <label class="block text-sm font-medium text-gray-700 mb-2">Select Stations</label>
-    <%= f.select :station_ids,
-        Station.with_itineraries.map { |s| ["#{s.name} (#{s.station_type&.titleize}) #{s.city.present? ? "- #{s.city}" : ''}", s.id] },
-        { },
-        {
-          multiple: true,
-          data: { controller: "slim-select" },
-          class: "w-full"
-        }
-    %>
+  <div class="space-y-4">
+    <label class="text-xl font-medium text-indigo-900 mb-2 flex items-center gap-2">
+      <i class="fas fa-map-marker-alt text-pink-500"></i>
+      Select Your Stations
+    </label>
+    <div class="relative">
+      <%= f.select :station_ids,
+          Station.with_itineraries.map { |s| ["#{s.name} (#{s.station_type&.titleize}) #{s.city.present? ? "- #{s.city}" : ''}", s.id] },
+          { },
+          {
+            multiple: true,
+            data: { controller: "slim-select" },
+            class: "w-full rounded-lg border-2 border-indigo-200 focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+          }
+      %>
+    </div>
   </div>
 
-  <div class="flex justify-end">
-    <%= f.submit search.new_record? ? "Create Search" : "Update Search", 
-                 class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" %>
+  <div class="flex justify-center pt-4">
+    <%= f.submit search.new_record? ? "Find My Perfect Station ✨" : "Update My Search ✨",
+                 class: "bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 hover:from-indigo-600 hover:via-purple-600 hover:to-pink-600 text-white font-bold py-3 px-6 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 animate-gradient" %>
   </div>
 <% end %>
