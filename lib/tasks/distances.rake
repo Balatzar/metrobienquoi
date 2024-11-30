@@ -1,10 +1,10 @@
 namespace :distances do
-  desc 'Update itineraries with duration from IDF Mobilité API (limited to 5_000)'
+  desc 'Update itineraries with duration from IDF Mobilité API'
   task update: :environment do
     puts "Updating itineraries with duration..."
     start_time = Time.now
     
-    itineraries = Itinerary.where(duration: nil).limit(5_000)
+    itineraries = Itinerary.where(duration: nil).limit(18_000)
     total = itineraries.count
     current = 0
     

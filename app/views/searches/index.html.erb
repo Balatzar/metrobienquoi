@@ -1,6 +1,11 @@
 <div class="container mx-auto px-4 py-8">
   <div class="flex justify-between items-center mb-6">
-    <h1 class="text-2xl font-bold">Searches</h1>
+    <div>
+      <h1 class="text-2xl font-bold">Searches</h1>
+      <p class="text-gray-500 text-sm mt-1">
+        Completed Itineraries (from IDF mobi API): <%= Itinerary.complete.count %>/<%= Itinerary.count %>
+      </p>
+    </div>
     <%= link_to 'New Search', new_search_path, class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" %>
   </div>
 
