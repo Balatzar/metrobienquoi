@@ -1,0 +1,22 @@
+<div class="bg-white rounded-xl overflow-hidden shadow-xl">
+    <div 
+        data-controller="map"
+        data-map-station-value="<%= {
+            latitude: station.latitude,
+            longitude: station.longitude,
+            name: station.name,
+            city: station.city
+        }.to_json %>"
+        data-map-connections-value="<%= connections.map { |i|
+            connected_station = i.start_station == station ? i.end_station : i.start_station
+            {
+                latitude: connected_station.latitude,
+                longitude: connected_station.longitude,
+                name: connected_station.name,
+                city: connected_station.city
+            }
+        }.to_json %>"
+        style="height: 400px;"
+        class="w-full"
+    ></div>
+</div>
