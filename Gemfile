@@ -56,7 +56,7 @@ end
 group :development do
   # Use console on exceptions pages [https://github.com/rails/web-console]
   gem "web-console"
-  
+
   # Seed data dumper [https://github.com/rroblak/seed_dump]
   gem "seed_dump"
 end

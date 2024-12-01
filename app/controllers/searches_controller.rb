@@ -19,7 +19,7 @@ class SearchesController < ApplicationController
     @search = Search.new(search_params)
 
     if @search.save
-      redirect_to @search, notice: 'Search was successfully created.'
+      redirect_to @search, notice: "Search was successfully created."
     else
       render :new, status: :unprocessable_entity
     end
@@ -29,7 +29,7 @@ class SearchesController < ApplicationController
     @search = Search.find(params[:id])
 
     if @search.update(search_params)
-      redirect_to @search, notice: 'Search was successfully updated.'
+      redirect_to @search, notice: "Search was successfully updated."
     else
       render :edit, status: :unprocessable_entity
     end
