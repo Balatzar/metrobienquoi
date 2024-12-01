@@ -4,7 +4,7 @@ namespace :distances do
     puts "Updating itineraries with duration..."
     start_time = Time.now
 
-    itineraries = Itinerary.where(duration: nil).limit(20_000)
+    itineraries = Itinerary.where(duration: nil).limit(1995)
     total = itineraries.count
     current = 0
 
