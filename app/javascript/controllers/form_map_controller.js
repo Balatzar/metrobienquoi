@@ -1,7 +1,7 @@
 import { Controller } from "@hotwired/stimulus";
 
 export default class extends Controller {
-  static targets = ["map", "select"];
+  static targets = ["map", "select", "error"];
 
   connect() {
     this.markers = new Map(); // Store markers by station ID
@@ -27,7 +27,36 @@ export default class extends Controller {
   setupSelectListener() {
     this.selectTarget.addEventListener("change", () => {
       this.updateMapForSelectedStations();
+      // Hide error when user makes a new selection
+      this.hideError();
     });
+
+    // Prevent form submission if validation fails
+    const form = this.element.querySelector("form");
+    if (form) {
+      form.addEventListener("submit", (e) => {
+        if (!this.isValid()) {
+          e.preventDefault();
+          this.showError();
+        }
+      });
+    }
+  }
+
+  isValid() {
+    return this.selectTarget.selectedOptions.length >= 2;
+  }
+
+  showError() {
+    if (this.hasErrorTarget) {
+      this.errorTarget.classList.remove("hidden");
+    }
+  }
+
+  hideError() {
+    if (this.hasErrorTarget) {
+      this.errorTarget.classList.add("hidden");
+    }
   }
 
   updateMapForSelectedStations() {

@@ -1,6 +1,8 @@
 class Search < ApplicationRecord
   has_and_belongs_to_many :stations
 
+  validate :minimum_stations_selected
+
   def nearby_stations(limit: 5)
     return [] if stations.size < 2
 
@@ -44,5 +46,13 @@ class Search < ApplicationRecord
       .values
       .sort_by { |entry| entry[:average_duration] }
       .first(limit)
+  end
+
+  private
+
+  def minimum_stations_selected
+    if stations.size < 2
+      errors.add(:base, "Please select at least 2 stations")
+    end
   end
 end
