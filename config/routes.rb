@@ -11,5 +11,5 @@ Rails.application.routes.draw do
 
   resources :searches
   resources :stations, only: [:show], defaults: { format: :json }
-  root "searches#index"
+  root "searches#new"
 end
